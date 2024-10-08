@@ -4,7 +4,6 @@
 //
 //  Created by Mingze Lee on 2024/10/7.
 //
-
 #ifndef LINEARLIST_H_
 #define LINEARLIST_H_
 #include <iostream>
@@ -37,8 +36,7 @@ protected:
 public:
     arrayList(int initialCapacity = 10);
     arrayList(const arrayList<T> &);
-    ~arrayList() { delete [] element; };
-    
+    ~arrayList() { delete element; };
     bool empty() const { return listSize == 0; };
     int size() const { return listSize; };
     T & get(int) const;
@@ -47,8 +45,26 @@ public:
     void insert(int, const T &);
     void output(std::ostream &) const;
     friend std::ostream & operator<<(std::ostream &, const arrayList<T> &);
-    
     int capacity() const { return arrayLength; };
+    
+    class iterator
+    {
+    protected:
+        T * position;
+    public:
+        iterator(T * pos = nullptr) : position(pos) { };
+        T& operator*() const { return *position; };
+        T* operator-> () const { return &* position; };
+        iterator& operator++() { ++position; return * this; };
+        iterator operator++(int) { iterator old = *this; ++position; return old; };
+        //operator++() is the operation ++x, while oeprator(int) is the operation x++
+        iterator& operator--() { --position; return * this; };
+        iterator operator--(int) { iterator old = *this; --position; return old; };
+        bool operator==(const iterator & right) { return position == right.position; };
+        bool operator!=(const iterator & right) { return position != right.position; };
+    };
+    iterator begin() { return iterator(element); };
+    iterator end() { return iterator(element + listSize); };
 };
 
 template <typename T>
@@ -153,6 +169,5 @@ std::ostream & operator<<(std::ostream & os, arrayList<T> & arL)
     arL.output(os);
     return os;
 }
-
 
 #endif
