@@ -37,7 +37,7 @@ protected:
 public:
     arrayList(int initialCapacity = 10);
     arrayList(const arrayList<T> &);
-    ~arrayList() { delete element; };
+    ~arrayList() { delete [] element; };
     
     bool empty() const { return listSize == 0; };
     int size() const { return listSize; };
